@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClawGuard — Enterprise Governance for OpenClaw</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-card-hover: #1a1a26;
+      --border: #1e1e2e;
+      --text: #e4e4ef;
+      --text-muted: #8888a0;
+      --accent: #6c5ce7;
+      --accent-glow: rgba(108, 92, 231, 0.15);
+      --accent-light: #a29bfe;
+      --green: #00cec9;
+      --green-glow: rgba(0, 206, 201, 0.15);
+      --red: #ff6b6b;
+      --red-glow: rgba(255, 107, 107, 0.12);
+      --orange: #fdcb6e;
+      --orange-glow: rgba(253, 203, 110, 0.12);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Gradient orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -100px; opacity: 0.12; }
+    .orb-2 { width: 500px; height: 500px; background: var(--green); bottom: 20%; left: -150px; opacity: 0.08; }
+    .orb-3 { width: 400px; height: 400px; background: var(--accent-light); top: 60%; right: -100px; opacity: 0.06; }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 10, 15, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--green));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 180px 0 120px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(108, 92, 231, 0.25);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--accent-light), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--bg-card-hover); border-color: var(--text-muted); }
+
+    /* ── Architecture ── */
+    .architecture {
+      padding: 80px 0;
+    }
+    .arch-diagram {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.8;
+      text-align: center;
+    }
+    .arch-diagram .hl { color: var(--accent-light); }
+    .arch-diagram .gr { color: var(--green); }
+
+    /* ── Section styling ── */
+    .section {
+      padding: 100px 0;
+    }
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-light);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 56px;
+      line-height: 1.7;
+    }
+
+    /* ── Feature Grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feature-card:hover {
+      border-color: rgba(108, 92, 231, 0.3);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    .feature-icon.purple { background: var(--accent-glow); }
+    .feature-icon.teal { background: var(--green-glow); }
+    .feature-icon.red { background: var(--red-glow); }
+    .feature-icon.orange { background: var(--orange-glow); }
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+    .feature-card .tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(108, 92, 231, 0.1);
+      color: var(--accent-light);
+      border: 1px solid rgba(108, 92, 231, 0.2);
+    }
+
+    /* ── How it works ── */
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      counter-reset: step;
+    }
+    .flow-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+      counter-increment: step;
+    }
+    .flow-step::before {
+      content: counter(step);
+      position: absolute;
+      top: -14px;
+      left: 24px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flow-step h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      margin-top: 4px;
+    }
+    .flow-step p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    /* ── Code block ── */
+    .code-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .code-section { grid-template-columns: 1fr; }
+    }
+    .code-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .code-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .code-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .code-header .dot.r { background: #ff5f57; }
+    .code-header .dot.y { background: #febc2e; }
+    .code-header .dot.g { background: #28c840; }
+    .code-body {
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      overflow-x: auto;
+    }
+    .code-body .kw { color: var(--accent-light); }
+    .code-body .str { color: var(--green); }
+    .code-body .cm { color: #555570; }
+
+    /* ── Stats ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 60px 0;
+    }
+    @media (max-width: 640px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stat {
+      text-align: center;
+      padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--accent-light), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 100px 0;
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.12), rgba(0, 206, 201, 0.08));
+      border: 1px solid rgba(108, 92, 231, 0.2);
+      border-radius: 24px;
+      padding: 72px 48px;
+    }
+    .cta-box h2 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+    .cta-box p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin: 0 auto 36px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    footer p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    footer a {
+      color: var(--accent-light);
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .hero { padding: 140px 0 80px; }
+      .section { padding: 60px 0; }
+      .arch-diagram { padding: 24px; font-size: 0.7rem; }
+      .feature-card { padding: 28px; }
+      .cta-box { padding: 48px 24px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <div class="logo">
+        <div class="logo-icon">🛡</div>
+        ClawGuard
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#setup">Setup</a>
+        <a href="https://github.com/rahuldotar/clawguard" class="nav-cta">GitHub →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">🔐 Enterprise Governance for OpenClaw</div>
+      <h1>
+        Control your AI.<br>
+        <span class="gradient">Before it ships.</span>
+      </h1>
+      <p>
+        ClawGuard adds SSO authentication, policy enforcement, skill governance,
+        full audit trails, and a remote kill switch to every OpenClaw gateway in
+        your organization.
+      </p>
+      <div class="hero-buttons">
+        <a href="https://github.com/rahuldotar/clawguard" class="btn btn-primary">
+          Get Started →
+        </a>
+        <a href="#features" class="btn btn-secondary">
+          Explore Features
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="architecture">
+    <div class="container">
+      <div class="arch-diagram">
+<span class="hl">┌─────────────────────┐</span>       <span class="gr">┌──────────────────────┐</span>       <span class="hl">┌─────────────────────┐</span>
+<span class="hl">│   OpenClaw Gateway   │</span>  HTTP  <span class="gr">│   Control Plane API   │</span>  HTTP  <span class="hl">│    Admin Console     │</span>
+<span class="hl">│                     │</span>◄─────►<span class="gr">│                      │</span>◄─────►<span class="hl">│                     │</span>
+<span class="hl">│  clawguard plugin   │</span>       <span class="gr">│   Fastify + Drizzle   │</span>       <span class="hl">│   Next.js + React    │</span>
+<span class="hl">└─────────────────────┘</span>       <span class="gr">└──────────┬───────────┘</span>       <span class="hl">└─────────────────────┘</span>
+                                         │
+                                    <span class="gr">PostgreSQL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="container">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">7</div>
+        <div class="stat-label">Database Tables</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">15+</div>
+        <div class="stat-label">API Endpoints</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Audit Levels</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">&lt;60s</div>
+        <div class="stat-label">Kill Switch Propagation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-label">Features</div>
+      <div class="section-title">Everything you need to govern AI at scale</div>
+      <div class="section-desc">
+        Six integrated systems that work together to keep your AI assistants
+        secure, auditable, and under your control.
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon purple">🔑</div>
+          <h3>SSO / OIDC Authentication</h3>
+          <p>
+            Authenticate users through your existing identity provider — Okta, Auth0,
+            Microsoft Entra ID, Keycloak, or any OIDC-compliant IdP. Authorization Code
+            flow with PKCE, automatic JWKS discovery, and token refresh built in.
+          </p>
+          <span class="tag">PKCE · JWT · Auto-discovery</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon teal">📋</div>
+          <h3>Policy Management</h3>
+          <p>
+            Define exactly which tools your AI can use. Create allow/deny lists per org,
+            configure enforcement profiles, and set audit levels. Policies are versioned —
+            every change is tracked, and gateways sync automatically.
+          </p>
+          <span class="tag">Versioned · Allow/Deny · Profiles</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon purple">🛡</div>
+          <h3>Tool Enforcement</h3>
+          <p>
+            Every tool call passes through a policy enforcer before execution. Denied tools
+            are blocked instantly, logged to the audit trail, and the user is notified.
+            Runs client-side for zero latency.
+          </p>
+          <span class="tag">Pre-execution · Zero latency</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon orange">📦</div>
+          <h3>Skill Governance</h3>
+          <p>
+            Users submit skills for review with an automated security scan. Admins review
+            findings, approve for the entire org or individual users, or reject with notes.
+            Only approved skills are loaded into gateways.
+          </p>
+          <span class="tag">Security scan · Approval workflow</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon teal">📊</div>
+          <h3>Audit Logging</h3>
+          <p>
+            Every tool call, session, and LLM interaction is logged. Three audit levels:
+            <strong>full</strong> (includes LLM I/O), <strong>metadata</strong> (tool calls
+            and sessions), or <strong>off</strong>. Events are batched, queryable, and stored
+            in partitioned tables for scale.
+          </p>
+          <span class="tag">Batched · Partitioned · Queryable</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon red">🚨</div>
+          <h3>Kill Switch</h3>
+          <p>
+            Instantly block all tool calls across every gateway in your org with one click.
+            Propagates via heartbeat polling with a configurable failure threshold — if the
+            control plane goes down, gateways lock automatically.
+          </p>
+          <span class="tag">Remote · Fail-secure</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="how-it-works" style="background: rgba(18, 18, 26, 0.5);">
+    <div class="container">
+      <div class="section-label">How It Works</div>
+      <div class="section-title">From login to enforcement in seconds</div>
+      <div class="section-desc">
+        The plugin hooks into OpenClaw's gateway lifecycle — authentication, policy fetch,
+        and enforcement happen automatically on startup.
+      </div>
+
+      <div class="flow-steps">
+        <div class="flow-step">
+          <h4>Authenticate</h4>
+          <p>User runs <code>/clawguard-login</code>. Browser opens to your IdP. PKCE code exchange returns a ClawGuard session token.</p>
+        </div>
+        <div class="flow-step">
+          <h4>Fetch Policy</h4>
+          <p>Plugin fetches the org policy from the control plane. Cached locally with TTL and stale fallback if the server is unreachable.</p>
+        </div>
+        <div class="flow-step">
+          <h4>Enforce Tools</h4>
+          <p>Every tool call hits the enforcer hook. Allowed tools proceed; denied tools are blocked and logged to the audit trail.</p>
+        </div>
+        <div class="flow-step">
+          <h4>Filter Skills</h4>
+          <p>Only admin-approved skills are loaded. Org-wide or per-user scope. Unapproved skills are invisible to the gateway.</p>
+        </div>
+        <div class="flow-step">
+          <h4>Log Everything</h4>
+          <p>Tool calls, sessions, and LLM interactions are batched and flushed to the control plane. Queryable from the admin console.</p>
+        </div>
+        <div class="flow-step">
+          <h4>Stay in Control</h4>
+          <p>Heartbeat polling checks for kill switch state and policy updates. If the control plane is down, gateways fail secure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Setup -->
+  <section class="section" id="setup">
+    <div class="container">
+      <div class="section-label">Quick Start</div>
+      <div class="section-title">Up and running in minutes</div>
+      <div class="section-desc">
+        Three components: a PostgreSQL-backed API server, a Next.js admin console,
+        and an OpenClaw plugin. All configured through environment variables.
+      </div>
+
+      <div class="code-section">
+        <div class="code-block">
+          <div class="code-header">
+            <span class="dot r"></span>
+            <span class="dot y"></span>
+            <span class="dot g"></span>
+            Control Plane
+          </div>
+          <div class="code-body">
+<span class="cm"># Start the API server</span>
+<span class="kw">cd</span> packages/clawguard-server
+
+<span class="kw">export</span> DATABASE_URL=<span class="str">"postgresql://localhost:5432/clawguard"</span>
+<span class="kw">export</span> JWT_SECRET=<span class="str">"your-secret-here"</span>
+<span class="kw">export</span> CORS_ORIGIN=<span class="str">"http://localhost:4200"</span>
+
+<span class="cm"># Run migrations</span>
+pnpm db:migrate
+
+<span class="cm"># Start server (port 4100)</span>
+pnpm dev
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="dot r"></span>
+            <span class="dot y"></span>
+            <span class="dot g"></span>
+            OpenClaw Plugin
+          </div>
+          <div class="code-body">
+<span class="cm">// openclaw.json</span>
+{
+  <span class="str">"plugins"</span>: {
+    <span class="str">"clawguard"</span>: {
+      <span class="str">"controlPlaneUrl"</span>: <span class="str">"http://localhost:4100"</span>,
+      <span class="str">"orgId"</span>: <span class="str">"your-org-uuid"</span>,
+      <span class="str">"sso"</span>: {
+        <span class="str">"issuerUrl"</span>: <span class="str">"https://your-idp.example.com"</span>,
+        <span class="str">"clientId"</span>: <span class="str">"your-client-id"</span>
+      }
+    }
+  }
+}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Ready to secure your AI?</h2>
+        <p>
+          ClawGuard is open source and self-hosted. Deploy it on your infrastructure,
+          keep your data in your hands.
+        </p>
+        <div class="hero-buttons">
+          <a href="https://github.com/rahuldotar/clawguard" class="btn btn-primary">
+            View on GitHub →
+          </a>
+          <a href="https://github.com/rahuldotar/clawguard/blob/main/docs/clawguard/control-plane.md" class="btn btn-secondary">
+            Read the Docs
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>
+        Built on <a href="https://github.com/openclaw/openclaw">OpenClaw</a> · 
+        MIT License · 
+        <a href="https://github.com/rahuldotar/clawguard">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
