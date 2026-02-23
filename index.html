@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClawGuard — Enterprise Governance for OpenClaw</title>
+  <title>ClawForge — One Dashboard for All Your AI Assistants</title>
+  <meta name="description" content="ClawForge gives you a single dashboard to manage, monitor, and control every OpenClaw AI assistant — whether across your team or across your projects.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -68,7 +69,7 @@
       z-index: 1;
     }
 
-    /* ── Nav ── */
+    /* -- Nav -- */
     nav {
       position: fixed;
       top: 0;
@@ -122,7 +123,7 @@
     }
     .nav-cta:hover { opacity: 0.85; }
 
-    /* ── Hero ── */
+    /* -- Hero -- */
     .hero {
       padding: 180px 0 120px;
       text-align: center;
@@ -156,7 +157,7 @@
     .hero p {
       font-size: 1.2rem;
       color: var(--text-muted);
-      max-width: 620px;
+      max-width: 640px;
       margin: 0 auto 40px;
       line-height: 1.7;
     }
@@ -189,27 +190,164 @@
     }
     .btn-secondary:hover { background: var(--bg-card-hover); border-color: var(--text-muted); }
 
-    /* ── Architecture ── */
-    .architecture {
-      padding: 80px 0;
+    /* -- The Problem -- */
+    .problem {
+      padding: 80px 0 40px;
     }
-    .arch-diagram {
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .problem-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    .problem-text h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      line-height: 1.15;
+    }
+    .problem-text p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+    .pain-points {
+      list-style: none;
+      margin-top: 24px;
+    }
+    .pain-points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .pain-points li .icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    /* -- Visual Diagram -- */
+    .diagram-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 48px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      overflow-x: auto;
-      white-space: pre;
-      line-height: 1.8;
+      padding: 40px 32px;
+    }
+    .diagram-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-light);
+      margin-bottom: 28px;
       text-align: center;
     }
-    .arch-diagram .hl { color: var(--accent-light); }
-    .arch-diagram .gr { color: var(--green); }
+    .diagram-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+    .diagram-node {
+      width: 100%;
+      max-width: 280px;
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .diagram-node.instances {
+      background: rgba(108, 92, 231, 0.1);
+      border: 1px solid rgba(108, 92, 231, 0.25);
+      color: var(--accent-light);
+    }
+    .diagram-node.server {
+      background: rgba(0, 206, 201, 0.1);
+      border: 1px solid rgba(0, 206, 201, 0.25);
+      color: var(--green);
+    }
+    .diagram-node.admin {
+      background: rgba(253, 203, 110, 0.1);
+      border: 1px solid rgba(253, 203, 110, 0.25);
+      color: var(--orange);
+    }
+    .diagram-node small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.78rem;
+      opacity: 0.7;
+      margin-top: 4px;
+    }
+    .diagram-arrow {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.6;
+    }
+    .diagram-instances-row {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      max-width: 280px;
+    }
+    .diagram-instances-row .diagram-node {
+      flex: 1;
+      padding: 12px 8px;
+      font-size: 0.78rem;
+    }
 
-    /* ── Section styling ── */
+    /* -- Stats -- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 60px 0;
+    }
+    @media (max-width: 640px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stat {
+      text-align: center;
+      padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--accent-light), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* -- Section styling -- */
     .section {
       padding: 100px 0;
     }
@@ -235,7 +373,7 @@
       line-height: 1.7;
     }
 
-    /* ── Feature Grid ── */
+    /* -- Feature Grid -- */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -292,22 +430,11 @@
       font-size: 0.92rem;
       line-height: 1.65;
     }
-    .feature-card .tag {
-      display: inline-block;
-      margin-top: 16px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: rgba(108, 92, 231, 0.1);
-      color: var(--accent-light);
-      border: 1px solid rgba(108, 92, 231, 0.2);
-    }
 
-    /* ── How it works ── */
+    /* -- How it works -- */
     .flow-steps {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       counter-reset: step;
     }
@@ -347,82 +474,42 @@
       line-height: 1.6;
     }
 
-    /* ── Code block ── */
-    .code-section {
+    /* -- Use Cases -- */
+    .use-cases {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
-      align-items: start;
     }
     @media (max-width: 768px) {
-      .code-section { grid-template-columns: 1fr; }
+      .use-cases { grid-template-columns: 1fr; }
     }
-    .code-block {
+    .use-case {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow: hidden;
+      padding: 36px;
+      transition: all 0.3s;
     }
-    .code-header {
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.8rem;
-      font-weight: 600;
+    .use-case:hover {
+      border-color: rgba(108, 92, 231, 0.3);
+      background: var(--bg-card-hover);
+    }
+    .use-case-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+    .use-case h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .use-case p {
       color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .code-header .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .code-header .dot.r { background: #ff5f57; }
-    .code-header .dot.y { background: #febc2e; }
-    .code-header .dot.g { background: #28c840; }
-    .code-body {
-      padding: 20px 24px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82rem;
-      line-height: 1.8;
-      color: var(--text-muted);
-      overflow-x: auto;
-    }
-    .code-body .kw { color: var(--accent-light); }
-    .code-body .str { color: var(--green); }
-    .code-body .cm { color: #555570; }
-
-    /* ── Stats ── */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      padding: 60px 0;
-    }
-    @media (max-width: 640px) {
-      .stats { grid-template-columns: repeat(2, 1fr); }
-    }
-    .stat {
-      text-align: center;
-      padding: 32px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-    }
-    .stat-value {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, var(--accent-light), var(--green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .stat-label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-      font-weight: 500;
+      font-size: 0.92rem;
+      line-height: 1.65;
     }
 
-    /* ── CTA ── */
+    /* -- CTA -- */
     .cta-section {
       padding: 100px 0;
       text-align: center;
@@ -446,7 +533,7 @@
       margin: 0 auto 36px;
     }
 
-    /* ── Footer ── */
+    /* -- Footer -- */
     footer {
       padding: 48px 0;
       border-top: 1px solid var(--border);
@@ -462,14 +549,14 @@
     }
     footer a:hover { text-decoration: underline; }
 
-    /* ── Responsive ── */
+    /* -- Responsive -- */
     @media (max-width: 768px) {
       .hero { padding: 140px 0 80px; }
       .section { padding: 60px 0; }
-      .arch-diagram { padding: 24px; font-size: 0.7rem; }
       .feature-card { padding: 28px; }
       .cta-box { padding: 48px 24px; }
       .nav-links a:not(.nav-cta) { display: none; }
+      .problem { padding: 40px 0 20px; }
     }
   </style>
 </head>
@@ -484,13 +571,13 @@
     <div class="container">
       <div class="logo">
         <div class="logo-icon">🛡</div>
-        ClawGuard
+        ClawForge
       </div>
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#how-it-works">How It Works</a>
-        <a href="#setup">Setup</a>
-        <a href="https://github.com/rahuldotar/clawguard" class="nav-cta">GitHub →</a>
+        <a href="#who-its-for">Use Cases</a>
+        <a href="https://github.com/rahuldotar/clawforge" class="nav-cta">GitHub →</a>
       </div>
     </div>
   </nav>
@@ -498,38 +585,71 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <div class="hero-badge">🔐 Enterprise Governance for OpenClaw</div>
+      <div class="hero-badge">🔐 Built for OpenClaw</div>
       <h1>
-        Control your AI.<br>
-        <span class="gradient">Before it ships.</span>
+        One dashboard for<br>
+        <span class="gradient">all your AI assistants.</span>
       </h1>
       <p>
-        ClawGuard adds SSO authentication, policy enforcement, skill governance,
-        full audit trails, and a remote kill switch to every OpenClaw gateway in
-        your organization.
+        ClawForge is the control center for OpenClaw. Manage every AI assistant
+        instance from a single place &mdash; set rules, review activity, approve
+        plugins, and shut things down instantly if something goes wrong.
       </p>
       <div class="hero-buttons">
-        <a href="https://github.com/rahuldotar/clawguard" class="btn btn-primary">
-          Get Started →
+        <a href="https://github.com/rahuldotar/clawforge" class="btn btn-primary">
+          View on GitHub →
         </a>
         <a href="#features" class="btn btn-secondary">
-          Explore Features
+          See What It Does
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Architecture -->
-  <section class="architecture">
+  <!-- The Problem + Visual -->
+  <section class="problem">
     <div class="container">
-      <div class="arch-diagram">
-<span class="hl">┌─────────────────────┐</span>       <span class="gr">┌──────────────────────┐</span>       <span class="hl">┌─────────────────────┐</span>
-<span class="hl">│   OpenClaw Gateway   │</span>  HTTP  <span class="gr">│   Control Plane API   │</span>  HTTP  <span class="hl">│    Admin Console     │</span>
-<span class="hl">│                     │</span>◄─────►<span class="gr">│                      │</span>◄─────►<span class="hl">│                     │</span>
-<span class="hl">│  clawguard plugin   │</span>       <span class="gr">│   Fastify + Drizzle   │</span>       <span class="hl">│   Next.js + React    │</span>
-<span class="hl">└─────────────────────┘</span>       <span class="gr">└──────────┬───────────┘</span>       <span class="hl">└─────────────────────┘</span>
-                                         │
-                                    <span class="gr">PostgreSQL</span>
+      <div class="problem-grid">
+        <div class="problem-text">
+          <h2>AI assistants are powerful. But who's watching them?</h2>
+          <p>
+            Every OpenClaw instance can read files, run commands, fetch data from the web,
+            and install third-party plugins. When you have multiple instances running &mdash;
+            across your team or across your own projects &mdash; things can get out of hand fast.
+          </p>
+          <ul class="pain-points">
+            <li>
+              <span class="icon">🚫</span>
+              No way to see what your AI assistants are actually doing
+            </li>
+            <li>
+              <span class="icon">🚫</span>
+              No control over which tools or plugins they can use
+            </li>
+            <li>
+              <span class="icon">🚫</span>
+              No single place to manage everything
+            </li>
+            <li>
+              <span class="icon">🚫</span>
+              No emergency off switch when something goes wrong
+            </li>
+          </ul>
+        </div>
+        <div class="diagram-card">
+          <div class="diagram-label">How ClawForge connects everything</div>
+          <div class="diagram-flow">
+            <div class="diagram-instances-row">
+              <div class="diagram-node instances">AI #1<small>Your laptop</small></div>
+              <div class="diagram-node instances">AI #2<small>Dev server</small></div>
+              <div class="diagram-node instances">AI #3<small>Team member</small></div>
+            </div>
+            <div class="diagram-arrow">&#8595; report activity &amp; follow rules &#8595;</div>
+            <div class="diagram-node server">ClawForge Server<small>Stores rules, logs &amp; status</small></div>
+            <div class="diagram-arrow">&#8593; you manage everything from here &#8593;</div>
+            <div class="diagram-node admin">Admin Dashboard<small>Your control center</small></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -538,20 +658,20 @@
   <div class="container">
     <div class="stats">
       <div class="stat">
-        <div class="stat-value">7</div>
-        <div class="stat-label">Database Tables</div>
+        <div class="stat-value">1</div>
+        <div class="stat-label">Dashboard for Everything</div>
       </div>
       <div class="stat">
-        <div class="stat-value">15+</div>
-        <div class="stat-label">API Endpoints</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">3</div>
-        <div class="stat-label">Audit Levels</div>
+        <div class="stat-value">100%</div>
+        <div class="stat-label">Activity Logged</div>
       </div>
       <div class="stat">
         <div class="stat-value">&lt;60s</div>
-        <div class="stat-label">Kill Switch Propagation</div>
+        <div class="stat-label">To Shut It All Down</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Unapproved Plugins Run</div>
       </div>
     </div>
   </div>
@@ -560,79 +680,72 @@
   <section class="section" id="features">
     <div class="container">
       <div class="section-label">Features</div>
-      <div class="section-title">Everything you need to govern AI at scale</div>
+      <div class="section-title">Everything you need to stay in control</div>
       <div class="section-desc">
-        Six integrated systems that work together to keep your AI assistants
-        secure, auditable, and under your control.
+        Six built-in capabilities that work together to keep your AI assistants
+        safe, visible, and under your command.
       </div>
 
       <div class="features-grid">
 
         <div class="feature-card">
           <div class="feature-icon purple">🔑</div>
-          <h3>SSO / OIDC Authentication</h3>
+          <h3>Secure Login</h3>
           <p>
-            Authenticate users through your existing identity provider — Okta, Auth0,
-            Microsoft Entra ID, Keycloak, or any OIDC-compliant IdP. Authorization Code
-            flow with PKCE, automatic JWKS discovery, and token refresh built in.
+            Users sign in through your existing identity provider &mdash; Google,
+            Microsoft, Okta, or any standard login system. No separate passwords
+            to manage. Each person is linked to your organization automatically.
           </p>
-          <span class="tag">PKCE · JWT · Auto-discovery</span>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon teal">📋</div>
-          <h3>Policy Management</h3>
+          <h3>Rules &amp; Policies</h3>
           <p>
-            Define exactly which tools your AI can use. Create allow/deny lists per org,
-            configure enforcement profiles, and set audit levels. Policies are versioned —
-            every change is tracked, and gateways sync automatically.
+            Decide exactly what your AI assistants can and cannot do. Create allow
+            and block lists for tools, choose how much activity gets logged, and
+            update rules anytime &mdash; changes sync to all instances automatically.
           </p>
-          <span class="tag">Versioned · Allow/Deny · Profiles</span>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon purple">🛡</div>
-          <h3>Tool Enforcement</h3>
+          <h3>Tool Control</h3>
           <p>
-            Every tool call passes through a policy enforcer before execution. Denied tools
-            are blocked instantly, logged to the audit trail, and the user is notified.
-            Runs client-side for zero latency.
+            Every action the AI tries to take is checked against your rules first.
+            If it's not allowed, it gets blocked on the spot and the attempt is
+            recorded. You always know what was tried and what was stopped.
           </p>
-          <span class="tag">Pre-execution · Zero latency</span>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon orange">📦</div>
-          <h3>Skill Governance</h3>
+          <h3>Plugin Approval</h3>
           <p>
-            Users submit skills for review with an automated security scan. Admins review
-            findings, approve for the entire org or individual users, or reject with notes.
-            Only approved skills are loaded into gateways.
+            Third-party plugins go through a review process before they can run.
+            They're automatically scanned for security issues, and only the ones
+            you approve get loaded into your AI assistants.
           </p>
-          <span class="tag">Security scan · Approval workflow</span>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon teal">📊</div>
-          <h3>Audit Logging</h3>
+          <h3>Activity Log</h3>
           <p>
-            Every tool call, session, and LLM interaction is logged. Three audit levels:
-            <strong>full</strong> (includes LLM I/O), <strong>metadata</strong> (tool calls
-            and sessions), or <strong>off</strong>. Events are batched, queryable, and stored
-            in partitioned tables for scale.
+            See everything your AI assistants have done &mdash; every tool used,
+            every session started, every interaction. Search and filter the logs
+            from the dashboard. Choose how much detail you want to capture.
           </p>
-          <span class="tag">Batched · Partitioned · Queryable</span>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon red">🚨</div>
-          <h3>Kill Switch</h3>
+          <h3>Emergency Kill Switch</h3>
           <p>
-            Instantly block all tool calls across every gateway in your org with one click.
-            Propagates via heartbeat polling with a configurable failure threshold — if the
-            control plane goes down, gateways lock automatically.
+            Something wrong? One click disables all AI tool access across every
+            connected instance. If ClawForge's server goes unreachable, instances
+            lock themselves down automatically. Safety first.
           </p>
-          <span class="tag">Remote · Fail-secure</span>
         </div>
 
       </div>
@@ -643,97 +756,69 @@
   <section class="section" id="how-it-works" style="background: rgba(18, 18, 26, 0.5);">
     <div class="container">
       <div class="section-label">How It Works</div>
-      <div class="section-title">From login to enforcement in seconds</div>
+      <div class="section-title">Simple to understand, powerful to use</div>
       <div class="section-desc">
-        The plugin hooks into OpenClaw's gateway lifecycle — authentication, policy fetch,
-        and enforcement happen automatically on startup.
+        ClawForge connects to your OpenClaw instances and handles security
+        and oversight behind the scenes.
       </div>
 
       <div class="flow-steps">
         <div class="flow-step">
-          <h4>Authenticate</h4>
-          <p>User runs <code>/clawguard-login</code>. Browser opens to your IdP. PKCE code exchange returns a ClawGuard session token.</p>
+          <h4>Connect your AI instances</h4>
+          <p>Add the ClawForge plugin to any OpenClaw instance you want to manage. It takes one config change.</p>
         </div>
         <div class="flow-step">
-          <h4>Fetch Policy</h4>
-          <p>Plugin fetches the org policy from the control plane. Cached locally with TTL and stale fallback if the server is unreachable.</p>
+          <h4>Users sign in</h4>
+          <p>Each user logs in with your organization's existing login system. ClawForge links them to your account automatically.</p>
         </div>
         <div class="flow-step">
-          <h4>Enforce Tools</h4>
-          <p>Every tool call hits the enforcer hook. Allowed tools proceed; denied tools are blocked and logged to the audit trail.</p>
+          <h4>Rules are applied</h4>
+          <p>Your AI instances download the latest rules from ClawForge and start following them immediately. No manual setup needed.</p>
         </div>
         <div class="flow-step">
-          <h4>Filter Skills</h4>
-          <p>Only admin-approved skills are loaded. Org-wide or per-user scope. Unapproved skills are invisible to the gateway.</p>
+          <h4>Everything is monitored</h4>
+          <p>Tool usage, sessions, and interactions are logged and sent to ClawForge. You can view and search it all from the dashboard.</p>
         </div>
         <div class="flow-step">
-          <h4>Log Everything</h4>
-          <p>Tool calls, sessions, and LLM interactions are batched and flushed to the control plane. Queryable from the admin console.</p>
+          <h4>Plugins are reviewed</h4>
+          <p>When someone wants to add a new plugin, it goes to you for approval. Only approved plugins are allowed to run.</p>
         </div>
         <div class="flow-step">
-          <h4>Stay in Control</h4>
-          <p>Heartbeat polling checks for kill switch state and policy updates. If the control plane is down, gateways fail secure.</p>
+          <h4>You stay in control</h4>
+          <p>Your AI instances check in regularly. If you flip the kill switch or update a rule, every instance picks it up within seconds.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Setup -->
-  <section class="section" id="setup">
+  <!-- Who It's For -->
+  <section class="section" id="who-its-for">
     <div class="container">
-      <div class="section-label">Quick Start</div>
-      <div class="section-title">Up and running in minutes</div>
+      <div class="section-label">Use Cases</div>
+      <div class="section-title">Built for anyone managing OpenClaw</div>
       <div class="section-desc">
-        Three components: a PostgreSQL-backed API server, a Next.js admin console,
-        and an OpenClaw plugin. All configured through environment variables.
+        Whether you're running a team of developers or managing your own set of
+        AI assistants, ClawForge gives you the visibility and control you need.
       </div>
 
-      <div class="code-section">
-        <div class="code-block">
-          <div class="code-header">
-            <span class="dot r"></span>
-            <span class="dot y"></span>
-            <span class="dot g"></span>
-            Control Plane
-          </div>
-          <div class="code-body">
-<span class="cm"># Start the API server</span>
-<span class="kw">cd</span> packages/clawguard-server
-
-<span class="kw">export</span> DATABASE_URL=<span class="str">"postgresql://localhost:5432/clawguard"</span>
-<span class="kw">export</span> JWT_SECRET=<span class="str">"your-secret-here"</span>
-<span class="kw">export</span> CORS_ORIGIN=<span class="str">"http://localhost:4200"</span>
-
-<span class="cm"># Run migrations</span>
-pnpm db:migrate
-
-<span class="cm"># Start server (port 4100)</span>
-pnpm dev
-          </div>
+      <div class="use-cases">
+        <div class="use-case">
+          <div class="use-case-icon">🏢</div>
+          <h3>Teams &amp; Organizations</h3>
+          <p>
+            Your team uses OpenClaw across multiple machines. ClawForge gives you
+            one place to set security policies, review what everyone's AI is doing,
+            manage plugin approvals, and respond instantly if something goes wrong.
+          </p>
         </div>
-
-        <div class="code-block">
-          <div class="code-header">
-            <span class="dot r"></span>
-            <span class="dot y"></span>
-            <span class="dot g"></span>
-            OpenClaw Plugin
-          </div>
-          <div class="code-body">
-<span class="cm">// openclaw.json</span>
-{
-  <span class="str">"plugins"</span>: {
-    <span class="str">"clawguard"</span>: {
-      <span class="str">"controlPlaneUrl"</span>: <span class="str">"http://localhost:4100"</span>,
-      <span class="str">"orgId"</span>: <span class="str">"your-org-uuid"</span>,
-      <span class="str">"sso"</span>: {
-        <span class="str">"issuerUrl"</span>: <span class="str">"https://your-idp.example.com"</span>,
-        <span class="str">"clientId"</span>: <span class="str">"your-client-id"</span>
-      }
-    }
-  }
-}
-          </div>
+        <div class="use-case">
+          <div class="use-case-icon">👤</div>
+          <h3>Power Users &amp; Developers</h3>
+          <p>
+            You run multiple OpenClaw instances across your own projects or
+            machines. ClawForge lets you manage all of them from a single dashboard
+            &mdash; same rules, same logs, same kill switch, all in one place.
+          </p>
         </div>
       </div>
     </div>
@@ -743,16 +828,16 @@ pnpm dev
   <section class="cta-section">
     <div class="container">
       <div class="cta-box">
-        <h2>Ready to secure your AI?</h2>
+        <h2>Ready to take control?</h2>
         <p>
-          ClawGuard is open source and self-hosted. Deploy it on your infrastructure,
-          keep your data in your hands.
+          ClawForge is open source and self-hosted. Your data stays on your
+          infrastructure, always.
         </p>
         <div class="hero-buttons">
-          <a href="https://github.com/rahuldotar/clawguard" class="btn btn-primary">
+          <a href="https://github.com/rahuldotar/clawforge" class="btn btn-primary">
             View on GitHub →
           </a>
-          <a href="https://github.com/rahuldotar/clawguard/blob/main/docs/clawguard/control-plane.md" class="btn btn-secondary">
+          <a href="https://github.com/rahuldotar/clawforge/blob/main/docs/clawforge/control-plane.md" class="btn btn-secondary">
             Read the Docs
           </a>
         </div>
@@ -764,9 +849,9 @@ pnpm dev
   <footer>
     <div class="container">
       <p>
-        Built on <a href="https://github.com/openclaw/openclaw">OpenClaw</a> · 
-        MIT License · 
-        <a href="https://github.com/rahuldotar/clawguard">GitHub</a>
+        Built for <a href="https://github.com/openclaw/openclaw">OpenClaw</a> ·
+        MIT License ·
+        <a href="https://github.com/rahuldotar/clawforge">GitHub</a>
       </p>
     </div>
   </footer>
